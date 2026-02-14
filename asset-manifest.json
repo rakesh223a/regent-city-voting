@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/regent-city-voting/static/css/main.47c2185c.css",
+    "main.js": "/regent-city-voting/static/js/main.6fd5d216.js",
+    "static/js/453.6e0aa840.chunk.js": "/regent-city-voting/static/js/453.6e0aa840.chunk.js",
+    "static/media/color2.jpeg": "/regent-city-voting/static/media/color2.d6f8c85918f91d042bc5.jpeg",
+    "static/media/color3.jpeg": "/regent-city-voting/static/media/color3.6ee62f0b6eac96dfb731.jpeg",
+    "static/media/color4.jpeg": "/regent-city-voting/static/media/color4.41db20c0b5b0b37085fb.jpeg",
+    "static/media/color1.jpeg": "/regent-city-voting/static/media/color1.7cef1698e419d9c806f1.jpeg",
+    "index.html": "/regent-city-voting/index.html",
+    "main.47c2185c.css.map": "/regent-city-voting/static/css/main.47c2185c.css.map",
+    "main.6fd5d216.js.map": "/regent-city-voting/static/js/main.6fd5d216.js.map",
+    "453.6e0aa840.chunk.js.map": "/regent-city-voting/static/js/453.6e0aa840.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.47c2185c.css",
+    "static/js/main.6fd5d216.js"
+  ]
+}

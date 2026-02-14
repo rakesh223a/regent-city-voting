@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef  } from "react";
 import "./App.css";
 import { supabase } from "./supabaseClient";
 
@@ -83,12 +83,12 @@ const generateFlats = () => {
   return flats;
 };
 
+const normalize = (str) => str.replace(/\s+/g, " ").trim();
 
 function App() {
   const [selected, setSelected] = useState(null);
   const [availableFlats, setAvailableFlats] = useState([]);
-  const [results, setResults] = useState([]);
-
+  const [voteCounts, setVoteCounts] = useState({});
 
   const [form, setForm] = useState({
     name: "",
@@ -98,96 +98,86 @@ function App() {
   });
 
   const fetchResults = async () => {
+    const { data, error } = await supabase.from("votes").select("color");
 
-  const { data, error } = await supabase
-    .from("votes")
-    .select("color");
+    if (error) {
+      console.error(error);
+      return;
+    }
 
-  if (error) {
-    console.error(error);
-    return;
-  }
+    const grouped = {};
 
-  /* ✅ Group & Count Votes ⭐⭐⭐ */
-  const grouped = {};
+    data.forEach((vote) => {
+      const key = normalize(vote.color);
 
-  data.forEach(vote => {
-    grouped[vote.color] = (grouped[vote.color] || 0) + 1;
-  });
+      grouped[key] = (grouped[key] || 0) + 1;
+    });
 
-  const formattedResults = Object.keys(grouped).map(color => ({
-    color,
-    count: grouped[color]
-  }));
-
-  setResults(formattedResults);
-};
+    setVoteCounts(grouped);
+  };
 
   const handleBlockChange = (block) => {
     setForm({ ...form, block, flat: "" });
 
-    
-      setAvailableFlats(generateFlats());
-   
+    setAvailableFlats(generateFlats());
   };
 
-const submitVote = async () => {
-
-  if (!selected) {
-    alert("Please select a color option");
-    return;
-  }
-
-  if (!form.name || !form.block || !form.flat) {
-    alert("Name, Block & Flat are mandatory 🚫");
-    return;
-  }
-
-  /* ✅ Build Palette Combination */
-  const paletteCombination = selected.palette
-    .map(p => p.name)
-    .join(" + ");
-
-  const { error } = await supabase.from("votes").insert([
-    {
-      name: form.name,
-      block: form.block,
-      flat: form.flat,
-      color: paletteCombination,
-      comments: form.comments,
-    },
-  ]);
-
-  /* ✅ Smart Error Handling ⭐⭐⭐ */
-  if (error) {
-
-    /* PostgreSQL duplicate constraint error */
-    if (error.code === "23505") {
-      alert("This flat has already voted in the selected block 🚫");
+  const submitVote = async () => {
+    if (!selected) {
+      alert("Please select a color option");
       return;
     }
 
-    /* Any unexpected DB error */
-    alert("Something went wrong. Please try again.");
-    console.error(error);
-    return;
-  }
+    if (!form.name || !form.block || !form.flat) {
+      alert("Name, Block & Flat are mandatory 🚫");
+      return;
+    }
 
-  alert("Vote Submitted ✅");
+    /* ✅ Build Palette Combination */
+    const paletteCombination = selected.palette.map((p) => p.name).join(" + ");
 
-  setForm({
-    name: "",
-    block: "",
-    flat: "",
-    comments: "",
-  });
+    const { error } = await supabase.from("votes").insert([
+      {
+        name: form.name,
+        block: form.block,
+        flat: form.flat,
+        color: paletteCombination,
+        comments: form.comments,
+      },
+    ]);
 
-  setSelected(null);
-};
+    /* ✅ Smart Error Handling ⭐⭐⭐ */
+    if (error) {
+      /* PostgreSQL duplicate constraint error */
+      if (error.code === "23505") {
+        alert("This flat has already voted in the selected block 🚫");
+        return;
+      }
 
-useEffect(() => {
-  fetchResults();
-}, []);
+      /* Any unexpected DB error */
+      alert("Something went wrong. Please try again.");
+      console.error(error);
+      return;
+    }
+
+    alert("Vote Submitted ✅");
+
+    setForm({
+      name: "",
+      block: "",
+      flat: "",
+      comments: "",
+    });
+
+    setSelected(null);
+  };
+
+  useEffect(() => {
+    fetchResults();
+  }, []);
+
+  const formRef = useRef(null);
+
 
   return (
     <div className="container">
@@ -228,55 +218,35 @@ useEffect(() => {
               className="building-img"
             />
 
-            <button className="select-btn" onClick={() => setSelected(option)}>
+            <div className="card-votes">
+              {voteCounts[
+                normalize(option.palette.map((p) => p.name).join(" + "))
+              ] || 0}{" "}
+              Votes
+            </div>
+
+            <button
+              className="select-btn"
+              onClick={() => {
+                setSelected(option);
+
+                setTimeout(() => {
+                  formRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }, 150);
+              }}
+            >
               Select
             </button>
           </div>
         ))}
       </div>
 
-     <div className="results">
-  <h2>Voting Results</h2>
-
-  {results.map((r, index) => {
-
-    /* ✅ Find matching palette ⭐ */
-    const matchedOption = colorOptions.find(
-      option =>
-        option.palette.map(p => p.name).join(" + ") === r.color
-    );
-
-    return (
-      <div key={index} className="result-card">
-
-        <div className="result-left">
-
-          <span>{r.color}</span>
-
-          {/* ✅ Palette Colors ⭐⭐⭐ */}
-          <div className="mini-palette">
-            {matchedOption?.palette.map((p, i) => (
-              <div
-                key={i}
-                className="mini-color"
-                style={{ backgroundColor: p.color }}
-              />
-            ))}
-          </div>
-
-        </div>
-
-        <strong>{r.count} Votes</strong>
-
-      </div>
-    );
-  })}
-</div>
-
-
-
       {/* ✅ Form */}
-      <div className="form">
+      <div className="form" ref={formRef}>
+
         <input
           placeholder="Resident Name *"
           value={form.name}

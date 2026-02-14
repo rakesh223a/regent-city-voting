@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { supabase } from "./supabaseClient";
 
@@ -83,9 +83,12 @@ const generateFlats = () => {
   return flats;
 };
 
+
 function App() {
   const [selected, setSelected] = useState(null);
   const [availableFlats, setAvailableFlats] = useState([]);
+  const [results, setResults] = useState([]);
+
 
   const [form, setForm] = useState({
     name: "",
@@ -93,6 +96,32 @@ function App() {
     flat: "",
     comments: "",
   });
+
+  const fetchResults = async () => {
+
+  const { data, error } = await supabase
+    .from("votes")
+    .select("color");
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  /* ✅ Group & Count Votes ⭐⭐⭐ */
+  const grouped = {};
+
+  data.forEach(vote => {
+    grouped[vote.color] = (grouped[vote.color] || 0) + 1;
+  });
+
+  const formattedResults = Object.keys(grouped).map(color => ({
+    color,
+    count: grouped[color]
+  }));
+
+  setResults(formattedResults);
+};
 
   const handleBlockChange = (block) => {
     setForm({ ...form, block, flat: "" });
@@ -156,6 +185,9 @@ const submitVote = async () => {
   setSelected(null);
 };
 
+useEffect(() => {
+  fetchResults();
+}, []);
 
   return (
     <div className="container">
@@ -202,6 +234,46 @@ const submitVote = async () => {
           </div>
         ))}
       </div>
+
+     <div className="results">
+  <h2>Voting Results</h2>
+
+  {results.map((r, index) => {
+
+    /* ✅ Find matching palette ⭐ */
+    const matchedOption = colorOptions.find(
+      option =>
+        option.palette.map(p => p.name).join(" + ") === r.color
+    );
+
+    return (
+      <div key={index} className="result-card">
+
+        <div className="result-left">
+
+          <span>{r.color}</span>
+
+          {/* ✅ Palette Colors ⭐⭐⭐ */}
+          <div className="mini-palette">
+            {matchedOption?.palette.map((p, i) => (
+              <div
+                key={i}
+                className="mini-color"
+                style={{ backgroundColor: p.color }}
+              />
+            ))}
+          </div>
+
+        </div>
+
+        <strong>{r.count} Votes</strong>
+
+      </div>
+    );
+  })}
+</div>
+
+
 
       {/* ✅ Form */}
       <div className="form">

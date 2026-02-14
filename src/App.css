@@ -191,3 +191,39 @@ select:disabled {
   cursor: not-allowed;
 }
 
+.results {
+  margin: 25px 0;
+}
+
+.results {
+  margin: 25px 0;
+}
+
+.result-card {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  font-size: 14px;
+}
+
+.result-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mini-palette {
+  display: flex;
+  gap: 6px;
+}
+.mini-color {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+

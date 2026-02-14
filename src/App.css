@@ -13,14 +13,35 @@ body {
 
 /* ✅ Banner ⭐ */
 .top-banner {
-  background: linear-gradient(90deg, #1e88e5, #42a5f5);
-  color: white;
-  padding: 20px;
+  background-image: url("./assets/RCBanner.png");
+  background-size: cover;
+  background-position: center;
   border-radius: 12px;
-  text-align: center;
   margin-bottom: 25px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
 }
+
+/* Dark overlay for readability */
+.banner-overlay {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 35px 20px;
+  text-align: center;
+  color: white;
+}
+
+.banner-overlay h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.banner-overlay p {
+  margin-top: 8px;
+  font-size: 15px;
+  opacity: 0.95;
+}
+
 
 .top-banner h1 {
   margin: 0;

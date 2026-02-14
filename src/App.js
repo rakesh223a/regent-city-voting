@@ -182,10 +182,16 @@ function App() {
   return (
     <div className="container">
       {/* ✅ Banner */}
-      <div className="top-banner">
-        <h1>Choose New Building Colors for Regent City!</h1>
-        <p>Please select your preferred color scheme</p>
-      </div>
+     <div className="top-banner">
+  <div className="banner-overlay">
+    <h1>Let's Give Regent City a Fresh New Look! ✨</h1>
+    <p>
+      Help us choose the new exterior color scheme to enhance our society's
+      beauty and value.
+    </p>
+  </div>
+</div>
+
 
       <div className="options">
         {colorOptions.map((option) => (

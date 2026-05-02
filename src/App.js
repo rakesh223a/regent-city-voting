@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef  } from "react";
 import "./App.css";
 import { supabase } from "./supabaseClient";
-
-// ✅ Import Images
-import c1Img from "./assets/color1.jpeg";
-import c2Img from "./assets/color2.jpeg";
-import c3Img from "./assets/color3.jpeg";
-import c4Img from "./assets/color4.jpeg";
+import colorOptions from "./colorOptions";
 
 const blocks = [
   "1",
@@ -24,63 +19,24 @@ const blocks = [
   "12B",
 ];
 
-const colorOptions = [
-  {
-    id: 1,
-    name: "Option 1: Cane Beige & Peanut Butter",
-    image: c1Img,
-    palette: [
-      { name: "Cane Beige", color: "#D2B48C" },
-      { name: "Peanut Brown", color: "#b7ac9c" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Option 2: Palm Beach & Spice Jar",
-    image: c2Img,
-    palette: [
-      { name: "Palm Beach", color: "#e5c6be" },
-      { name: "Spice Jar", color: "#a16866" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Option 3: Morning Glory & Nut Brown",
-    image: c3Img,
-    palette: [
-      { name: "Morning Glory", color: "#dcd8cd" },
-      { name: "Nut Brown", color: "#64483f" },
-    ],
-  },
-  {
-    id: 4,
-    name: "Option 4: Sesame Seed & Warmstone",
-    image: c4Img,
-    palette: [
-      { name: "Sesame Seed", color: "#d7c1aa" },
-      { name: "Warmstone", color: "#be9878" },
-    ],
-  },
-];
+const blockFlatsMap = {
+  "1": ["GA", "GB", "1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D"],
+  "2": ["GA", "GB", "1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D"],
+  "3": ["GA", "GB", "1A", "1B", "1C", "1D", "1E", "2A", "2B", "2C", "2D", "2E", "3A", "3B", "3C", "3D", "3E", "4A", "4B", "4C", "4D", "4E"],
+  "4": ["GA", "GB", "1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D"],
+  "5": ["GA", "GB", "1A", "1B", "1C", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "4A", "4B", "4C"],
+  "6": ["GA", "GB", "1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D"],
+  "7": ["GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GI", "GJ", "1A", "1B", "1C", "1D", "1E", "1F", "1G", "1H", "1I", "1J", "2A", "2B", "2C", "2D", "2E", "2F", "2G", "2H", "2I", "2J", "3A", "3B", "3C", "3D", "3E", "3F", "3G", "3H", "3I", "3J", "4A", "4B", "4C", "4D", "4E", "4F", "4G", "4H", "4I", "4J"],
+  "8": ["GA", "GB", "GC", "GD", "GE", "1A", "1B", "1C", "1D", "1E", "1F", "1G", "1H", "1I", "1J", "2A", "2B", "2C", "2D", "2E", "2F", "2G", "2H", "2I", "2J", "3A", "3B", "3C", "3D", "3E", "3F", "3G", "3H", "3I", "3J", "4A", "4B", "4C", "4D", "4E", "4F", "4G", "4H", "4I", "4J"],
+  "9": ["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D"],
+  "10": ["GB", "1A", "1B", "1C", "1D", "1E", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "3E", "4A", "4B", "4C", "4D"],
+  "11": ["GA", "GB", "GC", "1A", "1B", "1C", "2A", "2B", "2C", "3A", "3B", "3C", "4A"],
+  "12A": ["1A", "1B", "1C", "1D", "1E", "1F", "2A", "2B", "2C", "2D", "2E", "2F", "3A", "3B", "3C", "3E", "3F", "4A", "4B", "4C", "4E", "4F"],
+  "12B": ["1A", "1B", "1D", "1E", "1F", "1G", "1H", "1I", "2A", "2B", "2C", "2D", "2E", "2F", "2H", "2I", "3A", "3B", "3C", "3D", "3E", "3F", "3G", "3H", "3I", "4A", "4B", "4C", "4D", "4E", "4F", "4G", "4H", "4I"],
+};
 
-const generateFlats = () => {
-  const flats = [];
-
-  /* Ground Floor */
-  const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
-
-  letters.forEach((letter) => {
-    flats.push(`G${letter}`);
-  });
-
-  /* Floors 1 → 4 */
-  for (let floor = 1; floor <= 4; floor++) {
-    letters.forEach((letter) => {
-      flats.push(`${floor}${letter}`);
-    });
-  }
-
-  return flats;
+const generateFlats = (block) => {
+  return blockFlatsMap[block] || [];
 };
 
 const normalize = (str) => str.replace(/\s+/g, " ").trim();
@@ -119,7 +75,7 @@ function App() {
   const handleBlockChange = (block) => {
     setForm({ ...form, block, flat: "" });
 
-    setAvailableFlats(generateFlats());
+    setAvailableFlats(generateFlats(block));
   };
 
   const submitVote = async () => {
@@ -218,11 +174,13 @@ function App() {
               </div>
             </div>
 
-            <img
-              src={option.image}
-              alt={option.name}
-              className="building-img"
-            />
+            {option.image && (
+              <img
+                src={option.image}
+                alt={option.name}
+                className="building-img"
+              />
+            )}
 
             <div className="card-votes">
               {voteCounts[

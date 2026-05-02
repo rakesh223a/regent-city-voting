@@ -124,7 +124,7 @@ body {
 /* ✅ Image */
 .building-img {
   width: 100%;
-  height: 140px;
+  height: 220px;
   object-fit: cover;
 }
 
@@ -204,7 +204,7 @@ textarea {
   }
 
   .building-img {
-    height: 180px;
+    height: 260px;
   }
 
   .top-banner h1 {

@@ -1,20 +1,28 @@
 {
   "files": {
-    "main.css": "/regent-city-voting/static/css/main.0a6aa79a.css",
-    "main.js": "/regent-city-voting/static/js/main.27f7aa4a.js",
+    "main.css": "/regent-city-voting/static/css/main.576f83fb.css",
+    "main.js": "/regent-city-voting/static/js/main.c535b132.js",
     "static/js/453.6e0aa840.chunk.js": "/regent-city-voting/static/js/453.6e0aa840.chunk.js",
     "static/media/RCBanner.png": "/regent-city-voting/static/media/RCBanner.cd6dd059a70f98d6d7fa.png",
+    "static/media/color12.jpeg": "/regent-city-voting/static/media/color12.d3964d0614c98e77b193.jpeg",
+    "static/media/color10.jpeg": "/regent-city-voting/static/media/color10.8ace7ec4d446fb5d8775.jpeg",
+    "static/media/color6.jpeg": "/regent-city-voting/static/media/color6.fd192f29d97bad2678a0.jpeg",
+    "static/media/color9.jpeg": "/regent-city-voting/static/media/color9.c742c508239720abd065.jpeg",
+    "static/media/color8.jpeg": "/regent-city-voting/static/media/color8.efe95e0d87dcbeb7f2e5.jpeg",
+    "static/media/color7.jpeg": "/regent-city-voting/static/media/color7.5896d98a4225fac6475c.jpeg",
+    "static/media/color11.jpeg": "/regent-city-voting/static/media/color11.0390a4c6ad11dbc75041.jpeg",
+    "static/media/color5.jpeg": "/regent-city-voting/static/media/color5.6102a6984ba60c5debef.jpeg",
     "static/media/color2.jpeg": "/regent-city-voting/static/media/color2.d6f8c85918f91d042bc5.jpeg",
     "static/media/color3.jpeg": "/regent-city-voting/static/media/color3.6ee62f0b6eac96dfb731.jpeg",
     "static/media/color4.jpeg": "/regent-city-voting/static/media/color4.41db20c0b5b0b37085fb.jpeg",
     "static/media/color1.jpeg": "/regent-city-voting/static/media/color1.7cef1698e419d9c806f1.jpeg",
     "index.html": "/regent-city-voting/index.html",
-    "main.0a6aa79a.css.map": "/regent-city-voting/static/css/main.0a6aa79a.css.map",
-    "main.27f7aa4a.js.map": "/regent-city-voting/static/js/main.27f7aa4a.js.map",
+    "main.576f83fb.css.map": "/regent-city-voting/static/css/main.576f83fb.css.map",
+    "main.c535b132.js.map": "/regent-city-voting/static/js/main.c535b132.js.map",
     "453.6e0aa840.chunk.js.map": "/regent-city-voting/static/js/453.6e0aa840.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0a6aa79a.css",
-    "static/js/main.27f7aa4a.js"
+    "static/css/main.576f83fb.css",
+    "static/js/main.c535b132.js"
   ]
 }

@@ -85,7 +85,7 @@ function App() {
     }
 
     if (!form.name || !form.block || !form.flat) {
-      alert("Name, Block & Flat are mandatory 🚫");
+      alert("Name,Block & Flat are mandatory 🚫");
       return;
     }
 
